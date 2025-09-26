@@ -1,63 +1,56 @@
-import React, { Component } from "react";
-import "../styles/App.css";
+import React, { Component } from 'react';
+import './App.css'; // Assuming you have some basic CSS for .start and .ball
 
-class App extends Component {
+class GolfGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      renderBall: false,
-      posi: 0,
-      ballPosition: { left: "0px", top: "10%" }
+      gameStarted: false,
+      ballPositionX: 0,
     };
-
-    this.buttonClickHandler = this.buttonClickHandler.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this); 
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   componentDidMount() {
-    window.addEventListener("keydown", this.handleKeyDown);
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("keydown", this.handleKeyDown);
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleKeyDown(e) {
-    if (!this.state.renderBall) return;
-    if (e.key === "ArrowRight") {
-      this.setState(prevState => {
-        const newPos = prevState.posi + 5;
-        return {
-          posi: newPos,
-          ballPosition: { left: `${newPos}px`, top: "10%" }
-        };
-      });
+  buttonClickHandler = () => {
+    this.setState({ gameStarted: true });
+  };
+
+  handleKeyDown = (event) => {
+    if (this.state.gameStarted && event.keyCode === 39) { // ArrowRight key
+      this.setState((prevState) => ({
+        ballPositionX: prevState.ballPositionX + 5,
+      }));
     }
-  }
+  };
 
-  buttonClickHandler() {
-    this.setState({
-      renderBall: true,
-      posi: 0,
-      ballPosition: { left: "0px", top: "10%" }
-    });
-  }
-
-  renderBallOrButton() {
-    if (this.state.renderBall) {
-      return <div className="ball" style={this.state.ballPosition}></div>;
-    } else {
+  renderChoice = () => {
+    if (!this.state.gameStarted) {
       return (
         <button className="start" onClick={this.buttonClickHandler}>
-          Start
+          Start Game
         </button>
       );
+    } else {
+      return (
+        <div
+          className="ball"
+          style={{ left: `${this.state.ballPositionX}px` }}
+        ></div>
+      );
     }
-  }
+  };
 
   render() {
-    return <div className="playground">{this.renderBallOrButton()}</div>;
+    return <div className="golf-game-container">{this.renderChoice()}</div>;
   }
 }
 
-export default App;
+export default GolfGame;
