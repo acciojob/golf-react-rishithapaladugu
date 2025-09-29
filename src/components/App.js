@@ -14,7 +14,7 @@ class App extends Component {
     };
 
     buttonClickHandler() {
-   
+
    }
     renderBallOrButton() {
 		if (this.state.renderBall) {
@@ -26,7 +26,7 @@ class App extends Component {
 
     // bind ArrowRight keydown event
     componentDidMount() {
-      
+
     }
 
     render() {
